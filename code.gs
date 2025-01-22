@@ -57,6 +57,11 @@ function printAllLabels() {
       console.warn(`entry ${make} ${model} has no price point, skipping item`)
       continue; // if price is blank, we are skipping
     }
+
+    if ((price == "") || (price == null) || (price == "Sell Price")) { // these checks are here to account for spreadsheet formatting for humans,
+      continue; // if price is blank, we are skipping
+    }
+
     console.log(item_name)
     switch (item_type) {
         case "M":
