@@ -53,8 +53,8 @@ function printAllLabels() {
     var condition = getValueByName(ss, "Condition", i);
     var item_type = getValueByName(ss,"Item Type",i);
 
-    if ((price == "") || (price == null) || (price == "Sell Price")) {
-      console.log("invalid entry, skipping")
+    if (make != ""  && price == "") {
+      console.warn(`entry ${make} ${model} has no price point, skipping item`)
       continue; // if price is blank, we are skipping
     }
     console.log(item_name)
