@@ -13,8 +13,9 @@ function printAllLabels() {
   // const datetime = Utilities.formatDate(new Date(), "GMT-7", 'MM-dd-yyyy\'T\'aHH:mm:ss\'Z\'');
   const datetime = Utilities.formatDate(new Date(), "GMT-7", 'EEE, MMM d yyyy h:mm:ss a');
 
+  console.log("Starting print all labels");
   // Get the Google Sheet with the data
-  var ss = SpreadsheetApp.getActive().getSheetByName("sample sheet");
+  var ss = SpreadsheetApp.getActive().getSheetByName("sample sheet"); // sample sheet comes from what the tab is named
   // Get the data from the sheet
   var selection = ss.getSelection();
   // ui = SpreadsheetApp.getUi();
