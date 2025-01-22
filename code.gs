@@ -10,6 +10,8 @@ function onOpen() {
 
 
 function printAllLabels() {
+  // const datetime = Utilities.formatDate(new Date(), "GMT-7", 'MM-dd-yyyy\'T\'aHH:mm:ss\'Z\'');
+  const datetime = Utilities.formatDate(new Date(), "GMT-7", 'EEE, MMM d yyyy h:mm:ss a');
 
   // Get the Google Sheet with the data
   var ss = SpreadsheetApp.getActive().getSheetByName("sample sheet");
@@ -158,22 +160,23 @@ function printAllLabels() {
     // ui.alert("saved PDF for item", make, model)
     copyDoc.saveAndClose();
     // console.log("copy doc", copyDoc);
-    docToPDF(copyDoc)
+    docToPDF(copyDoc,datetime)
     deleteFileByID(copyId)
   }
 }
 
-function docToPDF(docfile) {
+function docToPDF(docfile,datetime) {
 
   // get Google Drive folder
   var folder_ID = DriveApp.getFoldersByName('COGS label printer').next().getId();
-  var parentFolder = DriveApp.getFolderById(folder_ID); //add this line... 
-  var folder, folders = DriveApp.getFoldersByName("label_exports");
+  var parentFolder = DriveApp.getFolderById(folder_ID); //add this line...
+  console.log(`datetime is ${datetime}`);
+  var folder, folders = DriveApp.getFoldersByName("label_exports " + datetime);
 
   if (folders.hasNext()) {
     folder = folders.next();
   } else {
-    folder = parentFolder.createFolder("label_exports"); //edit this line
+    folder = parentFolder.createFolder("label_exports " + datetime); //edit this line
   }
 
 
