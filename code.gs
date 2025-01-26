@@ -335,10 +335,14 @@ function printAllLabels() {
     // copyDoc.getBody().setAttributes({"PAGE_WIDTH":52,"PAGE_HEIGHT":152}),
     // ui.alert("saved PDF for item", make, model)
     copyDoc.saveAndClose();
-    // console.log("copy doc", copyDoc);
-    docToPDF(copyDoc, datetime)
-    deleteFileByID(copyId)
+    var pdfid = docToPDF(copyDoc, datetime);
+    console.log(`pdfid returned from docToPDF is ${pdfid}`);
+    deleteFileByID(copyId);
+    pdfids.push(pdfid);
   }
+  // last thing is to combine all exported labels into a single label
+  mergePDFs(datetime, pdfids);
+
 }
 
 function docToPDF(docfile, datetime) {
@@ -362,9 +366,9 @@ function docToPDF(docfile, datetime) {
   pdfBlob.setName(docfile.getName() + "_label_.pdf")
   // create new PDF file in Google Drive folder
   folder.createFile(pdfBlob);
-  // console.log(folder)
-
-  return "Thank you, your file was uploaded successfully!";
+  var pdfid = folder.getFilesByName(docfile.getName() + "_label.pdf").next().getId();
+  console.log(`doctopdf pdfid ${pdfid}`);
+  return pdfid;
 }
 
 function deleteFileByID(fileId) {
@@ -383,4 +387,42 @@ function getValueByName(sheet, colName, row) {
   }
 }
 
+function mergePDFs(datetime, pdfids) {
+  console.log("starting PDF merge function");
+  console.log(`datetime set inside pdf merge function is ${datetime}`);
 
+  // get Google Drive folder
+  var folder_ID = DriveApp.getFoldersByName('COGS label printer').next().getId();
+  console.log("drive app folder id is" + folder_ID);
+  var parentFolder = DriveApp.getFolderById(folder_ID); //add this line...
+  var folder, folders = DriveApp.getFoldersByName("label_exports " + datetime);
+
+  if (folders.hasNext()) {
+    folder = folders.next();
+  } else {
+  }
+  console.log(`folder to be saved to is ${folder}`);
+
+  // Create the final merged PDF file in Drive
+  _merge(pdfids, folder)
+  // console.log("File saved: "+ " in folder: " + folder.getName());
+
+}
+
+async function _merge(ids, folder) {
+  const data = ids.map(id => new Uint8Array(DriveApp.getFileById(id).getBlob().getBytes()));
+
+  const cdnjs = "https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js";
+  eval(UrlFetchApp.fetch(cdnjs).getContentText().replace(/setTimeout\(.*?,.*?(\d*?)\)/g, "Utilities.sleep($1);return t();"));
+
+  const pdfDoc = await PDFLib.PDFDocument.create();
+
+  for (let i = 0; i < data.length; i++) {
+    const pdfData = await PDFLib.PDFDocument.load(data[i]);
+    const pages = await pdfDoc.copyPages(pdfData, pdfData.getPageIndices());
+    pages.forEach(page => pdfDoc.addPage(page));
+  }
+
+  const bytes = await pdfDoc.save();
+  folder.createFile(Utilities.newBlob([...new Int8Array(bytes)], MimeType.PDF, "merged_labels.pdf"));
+}
