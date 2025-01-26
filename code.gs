@@ -182,25 +182,10 @@ function printAllLabels() {
   console.log("Starting print all labels");
   // Get the Google Sheet with the data
   var ss = SpreadsheetApp.getActive().getSheetByName("sample sheet"); // sample sheet comes from what the tab is named
-  // Get the data from the sheet
-  var selection = ss.getSelection();
-  // ui = SpreadsheetApp.getUi();
-
-  // if a user has a cell clicked, i think that changes the active range
-  // going to bypass control flow for now
-  if (selection.getActiveRange().getA1Notation() == null) {
-    ui.alert('No range selected');
-    var data = ss.getDataRange().getValues();
-    // console.log("here");
-  }
-  else {
-    var range = ss.getRange(selection.getActiveRange().getA1Notation());
-    // console.log("no, here!");
-  }
   var list1data = ss.getDataRange().getValues();
-  const uiNames = list1data[0];
-  const columnNames = list1data[1];
+
   // console.log(columnNames);
+  const pdfids = [];
   for (i = 1; i < list1data.length; i++) {
 
     // Get the product label template
@@ -247,11 +232,13 @@ function printAllLabels() {
         console.log(`starting spreadsheet extraction for ${item_name}`);
         var template_id = DriveApp.getFilesByName("guitar_template").next().getId();
         console.log("generating label", item_name, price);
+
         var copyId = DriveApp.getFileById(template_id).makeCopy(item_name).getId();
         console.log("log: copyID", copyId);
 
         // Open the temporary document
         var copyDoc = DocumentApp.openById(copyId);
+
         // Get the document’s body section
         var label = copyDoc.getBody();
         // Replace the placeholders in the template
@@ -329,8 +316,7 @@ function printAllLabels() {
     label.replaceText("{PRICE}", price);
     label.replaceText("{CONDITION}", condition);
     console.log(":))))");
-    // copyDoc.getBody().setAttributes({"PAGE_WIDTH":52,"PAGE_HEIGHT":152}),
-    // ui.alert("saved PDF for item", make, model)
+
     copyDoc.saveAndClose();
     var pdfid = docToPDF(copyDoc, datetime);
     console.log(`pdfid returned from docToPDF is ${pdfid}`);
@@ -360,7 +346,8 @@ function docToPDF(docfile, datetime) {
 
   // get file content as PDF blob
   var pdfBlob = docfile.getAs('application/pdf');
-  pdfBlob.setName(docfile.getName() + "_label_.pdf")
+  pdfBlob.setName(docfile.getName() + "_label.pdf");
+
   // create new PDF file in Google Drive folder
   folder.createFile(pdfBlob);
   var pdfid = folder.getFilesByName(docfile.getName() + "_label.pdf").next().getId();
