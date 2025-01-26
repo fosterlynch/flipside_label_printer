@@ -231,19 +231,18 @@ function printAllLabels() {
     console.log(item_name)
     switch (item_type) {
       case "M":
-        continue;
-      // var template_id = DriveApp.getFilesByName("miscellaneous").next().getId();
-      // console.log("generating label", item_name, price);
-      // var copyId = DriveApp.getFileById(template_id).makeCopy(item_name).getId();
-      // console.log("log: copyID", copyId);
+        var template_id = DriveApp.getFilesByName("misc_template").next().getId();
+        console.log("generating label", item_name, price);
+        var copyId = DriveApp.getFileById(template_id).makeCopy(item_name).getId();
+        console.log("log: copyID", copyId);
 
-      // // Open the temporary document
-      // var copyDoc = DocumentApp.openById(copyId);
-      // // Get the document’s body section
-      // var label = copyDoc.getBody();
-      // // Replace the placeholders in the template
+        // Open the temporary document
+        var copyDoc = DocumentApp.openById(copyId);
+        // Get the document’s body section
+        var label = copyDoc.getBody();
+        // Replace the placeholders in the template
 
-      // break;
+        break;
       case "G":
         console.log(`starting spreadsheet extraction for ${item_name}`);
         var template_id = DriveApp.getFilesByName("guitar_template").next().getId();
@@ -278,52 +277,50 @@ function printAllLabels() {
         label.replaceText("{MODDED}", moded);
         break;
       case "A":
-        continue;
-      // var template_id = DriveApp.getFilesByName("amp").next().getId();
-      // console.log("generating label", item_name, price);
-      // var copyId = DriveApp.getFileById(template_id).makeCopy(item_name).getId();
-      // console.log("log: copyID", copyId);
+        var template_id = DriveApp.getFilesByName("amp_template").next().getId();
+        console.log("generating label", item_name, price);
+        var copyId = DriveApp.getFileById(template_id).makeCopy(item_name).getId();
+        console.log("log: copyID", copyId);
 
-      // // Open the temporary document
-      // var copyDoc = DocumentApp.openById(copyId);
-      // // Get the document’s body section
-      // var label = copyDoc.getBody();
+        // Open the temporary document
+        var copyDoc = DocumentApp.openById(copyId);
+        // Get the document’s body section
+        var label = copyDoc.getBody();
 
-      // // Replace the placeholders in the template
-      // var channel = getValueByName(ss, "Channel", i);
-      // var power_tubes = getValueByName(ss, "Origin", i);
-      // var speaker = getValueByName(ss, "Serial #", i);
-      // var fs = getValueByName(ss,"Item Type",i);
-      // var effects = getValueByName(ss,"Body Wood",i);
-      // var cover = getValueByName(ss,"Fretboard",i);
+        // Replace the placeholders in the template
+        var channel = getValueByName(ss, "Channel", i);
+        var power_tubes = getValueByName(ss, "Origin", i);
+        var speaker = getValueByName(ss, "Serial #", i);
+        var fs = getValueByName(ss, "Item Type", i);
+        var effects = getValueByName(ss, "Body Wood", i);
+        var cover = getValueByName(ss, "Fretboard", i);
 
-      // label.replaceText("{CHANNEL}", channel);
-      // label.replaceText("{POWER_TUBES}", power_tubes);
-      // label.replaceText("{SPEAKER}", speaker);
-      // label.replaceText("{FS}", fs);
-      // label.replaceText("{EFFECTS}", effects);
-      // label.replaceText("{COVER}", cover);
+        label.replaceText("{CHANNEL}", channel);
+        label.replaceText("{POWER_TUBES}", power_tubes);
+        label.replaceText("{SPEAKER}", speaker);
+        label.replaceText("{FS}", fs);
+        label.replaceText("{EFFECTS}", effects);
+        label.replaceText("{COVER}", cover);
 
-      // break;
+        break;
 
       case "P":
-        continue;
-      // var template_id = DriveApp.getFilesByName("pedal").next().getId();
-      // console.log("generating label", item_name, price);
-      // var copyId = DriveApp.getFileById(template_id).makeCopy(item_name).getId();
-      // console.log("log: copyID", copyId);
+        var template_id = DriveApp.getFilesByName("pedal_template").next().getId();
+        console.log("generating label", item_name, price);
+        var copyId = DriveApp.getFileById(template_id).makeCopy(item_name).getId();
+        console.log("log: copyID", copyId);
 
-      // // Open the temporary document
-      // var copyDoc = DocumentApp.openById(copyId);
-      // // Get the document’s body section
-      // var label = copyDoc.getBody();
+        // Open the temporary document
+        var copyDoc = DocumentApp.openById(copyId);
+        // Get the document’s body section
+        var label = copyDoc.getBody();
 
-      // // Replace the placeholders in the template
-      // var box = getValueByName(ss, "Box", i);
-      // var power = getValueByName(ss, "Power", i);
-      // label.replaceText("{BOX}", box);
-      // label.replaceText("{POWER}", power);
-      // break;
+        // Replace the placeholders in the template
+        var box = getValueByName(ss, "Box", i);
+        var power = getValueByName(ss, "Power", i);
+        label.replaceText("{BOX}", box);
+        label.replaceText("{POWER}", power);
+        break;
 
     }
 
