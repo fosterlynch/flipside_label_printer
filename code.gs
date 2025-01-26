@@ -2,7 +2,7 @@
 function onOpen() {
   var spreadsheet = SpreadsheetApp.getActive();
   var menuItems = [
-    { name: 'print selcted rows to labels', functionName: 'printSelectedLabel' },
+    { name: 'DEPRICATED: print selcted rows to labels', functionName: 'printSelectedLabel' },
     { name: 'print all rows to labels', functionName: 'printAllLabels' }
   ];
   spreadsheet.addMenu('Print Labels', menuItems);
