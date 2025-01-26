@@ -1,0 +1,7 @@
+- [ ] Display prompt of "x of y" to let user know how many labels are left to print while running. Potentially do a time estimate?
+- [ ] Number of character checks to make sure excel data is transported properly. if not give warning to user?
+- [ ] Logging. Where Do the logs go?
+- [ ] Monitoring. How can I keep track of usage?
+- [ ] Redundancy. How can I make sure that any apps script updates don't break this product?
+- [ ] Feature. Enable selected row print.
+- [ ] Feature. Label and/or save by label type? (figuring people will appreciaite labels for each area of the shop. Meaning you dont wanna run from guitars to amps to label sequentially. )
